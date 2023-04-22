@@ -1,1 +1,2 @@
 Entendendo o HEAD
+Esta linha foi mofidicada no ramo master
