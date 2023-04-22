@@ -8,7 +8,7 @@
 #define TAM 100
 
 char const tabelaDePalavras[NUM_PALAVRAS][TAM] = {
-"BAT ATA$É um tubérculo",
+"BATATA$É um tubérculo",
 "AIPIM$Usa-se para fazer sagu",
 "COMPUTACAO$Melhor curso do mundo",
 "CHIMARRAO$Se toma numa cuia",
