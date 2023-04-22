@@ -1,6 +1,0 @@
-Entendendo o HEAD
-<<<<<<< HEAD
-Esta linha foi mofidicada no ramo master
-=======
-esta linha foi modificada no ramo teste
->>>>>>> teste
