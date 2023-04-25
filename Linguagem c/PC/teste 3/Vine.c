@@ -81,13 +81,11 @@ void leitura(celula *p_lista1, celula *p_lista2,celula *p_lista3,celula *p_lista
 }
 
 void insere(char c, celula *p_lista){
-    celula *nova, *fim;
+    celula *nova;
     nova = (celula *)malloc(sizeof(celula));
-    //strcpy(nova -> c, c);
     nova -> c = c;
     nova -> prox = p_lista -> prox;
     p_lista -> prox = nova;
-
 }
 
 void gravacao(celula *p_lista1, celula *p_lista2,celula *p_lista3,celula *p_lista4,celula *p_lista5,celula *p_lista6,celula *p_lista7,celula *p_lista8,celula *p_lista9,celula *p_lista10){
