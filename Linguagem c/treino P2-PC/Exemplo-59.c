@@ -11,7 +11,7 @@ typedef struct cel celula;
 celula *cria_lista();
 void insere_no_inicio(int conteudo, celula *p_lista);
 void insere_no_fim(int conteudo, celula *p_lista);
-void imprime(celula * ini);
+void imprime(celula *p_lista);
 
 int main()
 {
@@ -44,13 +44,15 @@ void insere_no_inicio(int conteudo, celula *p_lista)
 
 void insere_no_fim(int conteudo, celula *p_lista)
 {
-    for(p_lista; p_lista->prox != NULL; p_lista = p_lista->prox);
-    insere_no_inicio(conteudo, p_lista);
+    celula *p;
+    for(p = p_lista; p->prox != NULL; p = p->prox);
+    insere_no_inicio(conteudo, p);
 }
 
-void imprime(celula * ini)
+void imprime(celula *p_lista)
 {
-	celula *p;
-	for (p = ini->prox; p != NULL; p = p->prox)
-		printf("%d\n", p->conteudo);
+    celula *p;
+    for(p = p_lista->prox; p != NULL; p = p->prox){
+        printf("\n%d", p->conteudo);
+    }
 }
