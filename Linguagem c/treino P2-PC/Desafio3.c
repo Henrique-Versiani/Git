@@ -17,7 +17,7 @@ void insere(double preco_pro, int ID_pro, char nome_pro[TAM], celula *p_lista);
 void insere_na_ordem(double preco_pro, int ID_pro, char nome_pro[TAM], celula *p_lista);
 void insere_no_fim(double preco_pro, int ID_pro, char nome_pro[TAM], celula *p_lista);
 void remova(int ID, celula *p_lista);
-void carrega_arquivo();
+void carrega_arquivo(celula *p_lista);
 void imprime(celula *p_lista);
 int compara(double preco_pro, celula *p_lista);
 int menu();
@@ -42,11 +42,9 @@ int main()
                 scanf("%d", &ID);
                 if(lista->prox == NULL){
                     insere(preco, ID, nome, lista);
-                }
-                else if(compara(preco, lista) == 1){
+                }else if(compara(preco, lista) == 1){
                     insere_no_fim(preco, ID, nome, lista);
-                }
-                else
+                }else
                     insere_na_ordem(preco, ID, nome, lista);
                 break;
             case 2:
@@ -58,7 +56,7 @@ int main()
                 imprime(lista);
                 break;
             case 4:
-                carrega_arquivo();
+                carrega_arquivo(lista);
                 break;
             case 5:
 
@@ -132,16 +130,30 @@ void imprime(celula *p_lista)
 {
     celula *p;
     int cont = 0;
-    for(p = p_lista->prox; p != NULL; p = p->prox){
+    for(p = p_lista->prox; p != NULL; p = p->prox, cont++){
         printf("\n\t\t---------PRODUTO %d----------", cont);
         printf("\n\t\tNOME: %s\n\t\tPRECO: %lf\n\t\tID: %d\n", p->nome, p->preco, p->ID);
-        cont++;
     }
 }
 
-void carrega_arquivo()
+void carrega_arquivo(celula *p_lista)
 {
+    double preco;
+    char nome[TAM];
+    int ID;
+    FILE *produto = fopen ("produtos.bin", "rb");
 
+    fread(&nome, sizeof(char), TAM, produto);
+    fread(&preco, sizeof(double), 1, produto);
+    fread(&ID, sizeof(int), 1, produto);
+
+    fclose(produto);
+    if(p_lista->prox == NULL){
+      insere(preco, ID, nome, p_lista);
+    }else if(compara(preco, p_lista) == 1){
+      insere_no_fim(preco, ID, nome, p_lista);
+    }else
+      insere_na_ordem(preco, ID, nome, p_lista);
 }
 
 void remova(int ID_pro, celula *p_lista)
