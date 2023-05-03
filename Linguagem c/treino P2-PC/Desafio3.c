@@ -1,3 +1,4 @@
+//TURMA: M11 --------- ALUNO: HENRIQUE COLARES VERSIANI
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,6 +12,7 @@ struct cel{
 };
 
 typedef struct cel celula;
+int count = 0;
 
 celula *cria_lista();
 void insere(double preco_pro, int ID_pro, char nome_pro[TAM], celula *p_lista);
@@ -18,6 +20,9 @@ void insere_na_ordem(double preco_pro, int ID_pro, char nome_pro[TAM], celula *p
 void insere_no_fim(double preco_pro, int ID_pro, char nome_pro[TAM], celula *p_lista);
 void remova(int ID, celula *p_lista);
 void carrega_arquivo(celula *p_lista);
+void salvarConteudo(celula *p_lista);
+void apaga_lista(celula *p_lista);
+celula *apagaLista(celula *lista);
 void imprime(celula *p_lista);
 int compara(double preco_pro, celula *p_lista);
 int menu();
@@ -56,10 +61,14 @@ int main()
                 imprime(lista);
                 break;
             case 4:
+                if(lista != NULL){
+                    lista = apagaLista(lista);
+                    lista = cria_lista();
+                }
                 carrega_arquivo(lista);
                 break;
             case 5:
-
+                salvarConteudo(lista);
                 break;
             case 0:
                 exit(0);
@@ -130,30 +139,71 @@ void imprime(celula *p_lista)
 {
     celula *p;
     int cont = 0;
-    for(p = p_lista->prox; p != NULL; p = p->prox, cont++){
-        printf("\n\t\t---------PRODUTO %d----------", cont);
-        printf("\n\t\tNOME: %s\n\t\tPRECO: %lf\n\t\tID: %d\n", p->nome, p->preco, p->ID);
+    if(count == 0){
+        for(p = p_lista->prox; p != NULL; p = p->prox, cont++){
+            printf("\n\t\t---------PRODUTO %d----------", cont);
+            printf("\n\t\tNOME: %s\n\t\tPRECO: %lf\n\t\tID: %d\n", p->nome, p->preco, p->ID);
     }
+    }else{
+        for(p = p_lista->prox->prox; p != NULL; p = p->prox, cont++){
+            printf("\n\t\t---------PRODUTO %d----------", cont);
+            printf("\n\t\tNOME: %s\n\t\tPRECO: %lf\n\t\tID: %d\n", p->nome, p->preco, p->ID);
+    }
+    }
+}
+
+celula *apagaLista(celula *lista)
+{
+    celula *p = lista, *temp = NULL;
+    while (p != NULL)
+    {
+        temp = p->prox;
+        free(p);
+
+        p = temp;
+    }
+
+    return NULL;
 }
 
 void carrega_arquivo(celula *p_lista)
 {
-    double preco;
-    char nome[TAM];
-    int ID;
     FILE *produto = fopen ("produtos.bin", "rb");
+    celula temp;
+    count++;
 
-    fread(&nome, sizeof(char), TAM, produto);
-    fread(&preco, sizeof(double), 1, produto);
-    fread(&ID, sizeof(int), 1, produto);
+    if (produto == NULL){
+        printf("\nNao foi possivel criar o arquivo!!");
+        exit(0);
+    }
+
+    while(fread(&temp, sizeof(celula), 1, produto)){
+        if(p_lista->prox == NULL){
+            insere(temp.preco, temp.ID, temp.nome, p_lista);
+        }else if(compara(temp.preco, p_lista) == 1){
+            insere_no_fim(temp.preco, temp.ID, temp.nome, p_lista);
+        }else
+            insere_na_ordem(temp.preco, temp.ID, temp.nome, p_lista);
+    }
+    fclose(produto);
+}
+
+void salvarConteudo(celula *p_lista)
+{
+    FILE *produto = fopen("produtos.bin", "wb");
+    celula *p;
+    
+    if (produto == NULL){
+        printf("\nNao foi possivel criar o arquivo!!");
+        exit(0);
+    }
+
+    for(p = p_lista; p != NULL; p = p->prox)
+    {
+        fwrite(p, sizeof(celula), 1, produto);
+    }
 
     fclose(produto);
-    if(p_lista->prox == NULL){
-      insere(preco, ID, nome, p_lista);
-    }else if(compara(preco, p_lista) == 1){
-      insere_no_fim(preco, ID, nome, p_lista);
-    }else
-      insere_na_ordem(preco, ID, nome, p_lista);
 }
 
 void remova(int ID_pro, celula *p_lista)
