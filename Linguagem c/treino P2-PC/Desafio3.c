@@ -21,7 +21,6 @@ void insere_no_fim(double preco_pro, int ID_pro, char nome_pro[TAM], celula *p_l
 void remova(int ID, celula *p_lista);
 void carrega_arquivo(celula *p_lista);
 void salvarConteudo(celula *p_lista);
-void apaga_lista(celula *p_lista);
 celula *apagaLista(celula *lista);
 void imprime(celula *p_lista);
 int compara(double preco_pro, celula *p_lista);
@@ -71,6 +70,8 @@ int main()
                 salvarConteudo(lista);
                 break;
             case 0:
+                if(lista != NULL)
+                    lista = apagaLista(lista);
                 exit(0);
         }
     }
@@ -159,10 +160,8 @@ celula *apagaLista(celula *lista)
     {
         temp = p->prox;
         free(p);
-
         p = temp;
     }
-
     return NULL;
 }
 
