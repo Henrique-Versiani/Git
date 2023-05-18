@@ -20,7 +20,7 @@ int main()
     while(!feof(entrada)){
         fscanf(entrada, "%d", &num);
         insere_na_ordem(num, lista);
-    }
+    }fclose(entrada);
     imprime(lista);
 }
 
@@ -46,6 +46,5 @@ void imprime(celula *p_lista)
     FILE *saida = fopen("saida.txt", "w");
     for(p = p_lista->prox; p != NULL; p = p->prox){
         fprintf(saida, "%d\n", p->num);
-    }
-    fclose(saida);
+    }fclose(saida);
 }
